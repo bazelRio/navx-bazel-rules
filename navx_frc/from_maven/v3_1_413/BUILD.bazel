@@ -1,0 +1,20 @@
+load("@wpi_bazel_rules//rules:cc.bzl", "wpilib_cc_library")
+load("@wpi_bazel_rules//rules:wpilib_repo.bzl", "make_cpp_alias")
+
+package(default_visibility = ["//visibility:public"])
+
+make_cpp_alias(name = "navx-navx-cpp")
+
+alias(
+    name = "navx-java",
+    actual = "@navx-navx-java//jar",
+)
+
+wpilib_cc_library(
+    name = "navx-cpp",
+    linkstatic = 1,
+    raw_deps = [
+        "@navx-navx-cpp-headers//:headers",
+        ":navx-navx-cpp-libs",
+    ],
+)

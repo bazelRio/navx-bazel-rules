@@ -3,19 +3,29 @@ Auto-generated rules for navx
 """
 
 load("@wpi_bazel_rules//rules:wpilib_repo.bzl", "wpilib_java_vendor_library", "wpilib_native_dependency")
+load("@bazel_tools//tools/build_defs/repo:jvm.bzl", "jvm_maven_import_external")
 
 def third_party_navx():
     __third_party_navx_native()
     return __third_party_navx_java()
 
 def __third_party_navx_java():
-    artifacts = [
-        "com.kauailabs.navx.frc:navx-java:4.0.425",
-    ]
+    repository_url = "https://repo1.maven.org/maven2"
 
-    repositories = ["https://repo1.maven.org/maven2"]
+    deps = []
+    deps.append(("navx-navx-java", "com.kauailabs.navx.frc:navx-java:4.0.425", "e7063e6ae04c7f5b1f55455b1fe534ee155fce7bf22adec462f24d516298330d"))
 
-    return artifacts, repositories
+    for name, artifact, sha in deps:
+        jvm_maven_import_external(
+            name = name,
+            artifact = artifact,
+            artifact_sha256 = sha,
+            server_urls = [repository_url],
+        )
+
+    artifacts = []
+
+    return artifacts, []
 
 def __third_party_navx_native():
     wpilib_native_dependency(
